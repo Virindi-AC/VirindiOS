@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{343BA7D4-BBC3-44F5-81EC-3EC305D5F99B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VirindiRPMPages</RootNamespace>
+    <AssemblyName>VirindiRPMPages</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="KerbalEngineer">
+      <HintPath>..\..\ksp-win64-1.2.2\KSP_win64\GameData\KerbalEngineer\KerbalEngineer.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\ksp-win64-1.2.2 - Copy\KSP_win64\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\ksp-win64-1.2.2 - Copy\KSP_win64\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\ksp-win64-1.2.2 - Copy\KSP_win64\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="MechJeb2">
+      <HintPath>..\..\ksp-win64-1.2.2\KSP_win64\GameData\MechJeb2\Plugins\MechJeb2.dll</HintPath>
+    </Reference>
+    <Reference Include="RasterPropMonitor">
+      <HintPath>..\..\ksp-win64-1.2.2 - Copy\KSP_win64\GameData\JSI\RasterPropMonitor\Plugins\RasterPropMonitor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VirindiPageMultiplexer.cs" />
+    <Compile Include="IMultiplexedPage.cs" />
+    <Compile Include="Pages\MenuPage.cs" />
+    <Compile Include="Pages\KeyboardTest.cs" />
+    <Compile Include="Pages\EngineeringData.cs" />
+    <Compile Include="PageDisplayBuffer.cs" />
+    <Compile Include="TextUI\Control.cs" />
+    <Compile Include="Keymaps\e40x20Button.cs" />
+    <Compile Include="Keymaps\ekOSButton.cs" />
+    <Compile Include="Keymaps\eMFDButton.cs" />
+    <Compile Include="Keymaps\eVDskyButton.cs" />
+    <Compile Include="Keymaps\MFDKeyMap.cs" />
+    <Compile Include="TextUI\NumericEdit.cs" />
+    <Compile Include="TextUI\EditBase.cs" />
+    <Compile Include="TextUI\ScrollList.cs" />
+    <Compile Include="Pages\UnEnterableTestPage.cs" />
+    <Compile Include="Pages\UITestPage.cs" />
+    <Compile Include="TextUI\OnScreenKeypad.cs" />
+    <Compile Include="TextUI\UIOnlyPage.cs" />
+    <Compile Include="TextUI\LinkButton.cs" />
+    <Compile Include="DataRenderers\RendererLibrary.cs" />
+    <Compile Include="DataRenderers\Stock.cs" />
+    <Compile Include="DataRenderers\KerbalEngineerR.cs" />
+    <Compile Include="Pages\DataRendererPage.cs" />
+    <Compile Include="Pages\AboutPage.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Pages\" />
+    <Folder Include="TextUI\" />
+    <Folder Include="Keymaps\" />
+    <Folder Include="DataRenderers\" />
+  </ItemGroup>
+</Project>

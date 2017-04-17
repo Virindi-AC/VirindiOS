@@ -9,12 +9,15 @@ namespace VirindiRPMPages.TextUI
     {
         public string Label = "";
         public List<string> Options = new List<string>();
+
         public int SelectedIndex = -1;
+        public event delControlEvent OnChanged;
 
         public override void ButtonUp(eMFDButton btn)
         {
             base.ButtonUp(btn);
 
+            int oldindex = SelectedIndex;
             if (Options.Count == 0)
                 SelectedIndex = -1;
             else if (btn == eMFDButton.Ok)
@@ -35,6 +38,9 @@ namespace VirindiRPMPages.TextUI
                 if (SelectedIndex < -1)
                     SelectedIndex = -1;
             }
+            if ((SelectedIndex != oldindex) && (OnChanged != null))
+                OnChanged(this);
+                
         }
 
         public override void Render(PageDisplayBuffer buf)

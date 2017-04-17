@@ -22,6 +22,7 @@ namespace VirindiRPMPages.MechJeb
             if (isinit) return;
             isinit = true;
 
+            AddTyp("Change Apoapsis", typeof(ManeuverTypes.Apoapsis));
         }
 
         public static ManeuverType CreateManeuverType(string name)

@@ -7,12 +7,19 @@ namespace VirindiRPMPages.TextUI
 {
     public class ScrollList : Control
     {
-        List<Control> Items = new List<Control>();
-        int CursorPosition = -1;
+        public List<Control> Items = new List<Control>();
+        public int CursorPosition = -1;
 
         public void AddControl(Control c)
         {
             Items.Add(c);
+            if (CachedDisplay != null)
+                c.NotifyOfDisplay(CachedDisplay);
+        }
+
+        public void Clear()
+        {
+            Items.Clear();
         }
 
         public override void NotifyOfDisplay(PageDisplayBuffer buf)

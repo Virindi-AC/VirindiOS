@@ -19,6 +19,8 @@ namespace VirindiRPMPages.TextUI
             Down,
         }
 
+        public delegate void delControlEvent(Control source);
+
         protected PageDisplayBuffer CachedDisplay = null;
         bool ihasfocus = false;
         public bool HasFocus { get { return ihasfocus; } }

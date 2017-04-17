@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>VirindiRPMPages</RootNamespace>
     <AssemblyName>VirindiRPMPages</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,23 +29,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="KerbalEngineer">
-      <HintPath>..\..\ksp-win64-1.2.2\KSP_win64\GameData\KerbalEngineer\KerbalEngineer.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\ksp-win64-1.2.2 - Copy\KSP_win64\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\ksp-win64-1.2.2 - Copy\KSP_win64\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\ksp-win64-1.2.2 - Copy\KSP_win64\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\ksp-win64-1.2.2 - Copy\KSP_win64\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="MechJeb2">
-      <HintPath>..\..\ksp-win64-1.2.2\KSP_win64\GameData\MechJeb2\Plugins\MechJeb2.dll</HintPath>
+      <HintPath>..\..\..\ksp-win64-1.2.2 - Copy\KSP_win64\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="RasterPropMonitor">
-      <HintPath>..\..\ksp-win64-1.2.2 - Copy\KSP_win64\GameData\JSI\RasterPropMonitor\Plugins\RasterPropMonitor.dll</HintPath>
+      <HintPath>..\..\..\ksp-win64-1.2.2 - Copy\KSP_win64\GameData\JSI\RasterPropMonitor\Plugins\RasterPropMonitor.dll</HintPath>
+    </Reference>
+    <Reference Include="MechJeb2">
+      <HintPath>..\..\..\ksp-win64-1.2.2\KSP_win64\GameData\MechJeb2\Plugins\MechJeb2.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\ksp-win64-1.2.2 - Copy\KSP_win64\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="KerbalEngineer">
+      <HintPath>..\..\..\ksp-win64-1.2.2\KSP_win64\GameData\KerbalEngineer\KerbalEngineer.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +75,11 @@
     <Compile Include="DataRenderers\KerbalEngineerR.cs" />
     <Compile Include="Pages\DataRendererPage.cs" />
     <Compile Include="Pages\AboutPage.cs" />
+    <Compile Include="TextUI\ChoiceBox.cs" />
+    <Compile Include="MechJeb\ManeuverPlanner.cs" />
+    <Compile Include="MechJeb\ManeuverType.cs" />
+    <Compile Include="MechJeb\ManeuverTypeFactory.cs" />
+    <Compile Include="MechJeb\ManeuverTypes\Apoapsis.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -82,5 +87,7 @@
     <Folder Include="TextUI\" />
     <Folder Include="Keymaps\" />
     <Folder Include="DataRenderers\" />
+    <Folder Include="MechJeb\" />
+    <Folder Include="MechJeb\ManeuverTypes\" />
   </ItemGroup>
 </Project>

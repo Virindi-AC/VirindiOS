@@ -28,6 +28,7 @@ namespace VirindiRPMPages.Pages
                 ret.Pages.Add(new DataRendererPage(DataRenderers.RendererLibrary.PageTemplates[i]));
             }
 
+            ret.Pages.Add(new MechJeb.ManeuverPlanner());
             ret.Pages.Add(CreateDebugMenu());
             return ret;
         }

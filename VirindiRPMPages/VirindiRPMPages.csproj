@@ -80,6 +80,7 @@
     <Compile Include="MechJeb\ManeuverType.cs" />
     <Compile Include="MechJeb\ManeuverTypeFactory.cs" />
     <Compile Include="MechJeb\ManeuverTypes\Apoapsis.cs" />
+    <Compile Include="MechJeb\TimeSelector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

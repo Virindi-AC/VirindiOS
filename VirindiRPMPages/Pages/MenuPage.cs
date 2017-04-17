@@ -142,21 +142,30 @@ namespace VirindiRPMPages.Pages
                 
             for (int i = 0; i < Pages.Count; ++i)
             {
+                Color drawcolor;
                 if (i == CursorPosition)
+                {
                     pagebuilder.Append('>');
+                    drawcolor = new Color(0.623529f, 0.807843f, 1f);
+                }
                 else
+                {
                     pagebuilder.Append(' ');
+                    drawcolor = Color.white;
+                }
                 if (Pages[i].IsActivationAllowed())
                 {
                     pagebuilder.Append(' ');
+                    pagebuilder.CursorColor = drawcolor;
                     pagebuilder.Append(Pages[i].GetMenuItemName());
+                    pagebuilder.CursorColor = Color.white;
                     pagebuilder.Append(' ');
                 }
                 else
                 {
                     pagebuilder.CursorColor = Color.red;
                     pagebuilder.Append('X');
-                    pagebuilder.CursorColor = Color.white;
+                    pagebuilder.CursorColor = drawcolor;
                     pagebuilder.Append(Pages[i].GetMenuItemName());
                     pagebuilder.CursorColor = Color.red;
                     pagebuilder.Append('X');

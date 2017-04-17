@@ -28,14 +28,14 @@ namespace VirindiRPMPages.TextUI
         public virtual void ButtonDown(eMFDButton btn)
         {
             if (btn != eMFDButton.Esc)
-                RootControl.ButtonDown(btn);
+                RootControl.RootButtonDown(btn);
         }
         public virtual void ButtonUp(eMFDButton btn)
         {
             if (btn == eMFDButton.Esc)
                 exit = true;
             else
-                RootControl.ButtonUp(btn);
+                RootControl.RootButtonUp(btn);
         }
         public void NotifyOfDisplay(PageDisplayBuffer b)
         {

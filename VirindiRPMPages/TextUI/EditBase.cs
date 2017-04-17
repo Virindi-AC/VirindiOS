@@ -38,10 +38,6 @@ namespace VirindiRPMPages.TextUI
         {
             base.Render(buf);
 
-            if (HasFocus)
-                buf.CursorColor = Color.red;
-            else
-                buf.CursorColor = Color.white;
             buf.Append(Label);
             buf.Append(" [");
             buf.Append(InputString);

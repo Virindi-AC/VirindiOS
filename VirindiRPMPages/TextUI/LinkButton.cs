@@ -11,7 +11,6 @@ namespace VirindiRPMPages.TextUI
         public event delOnClick OnClick;
 
         public string Label = "";
-        public Color color = Color.white;
 
         public override void ButtonUp(eMFDButton btn)
         {
@@ -25,10 +24,7 @@ namespace VirindiRPMPages.TextUI
         {
             base.Render(buf);
 
-            Color c = buf.CursorColor;
-            buf.CursorColor = color;
             buf.AppendLine(Label);
-            buf.CursorColor = c;
         }
     }
 }

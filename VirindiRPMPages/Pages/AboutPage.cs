@@ -64,7 +64,8 @@ namespace VirindiRPMPages.Pages
                     sb.AppendLine(b.InfoKeyMap.HasNumpad.ToString());
                     sb.Append("Has Alphabet: ");
                     sb.AppendLine(b.InfoKeyMap.HasAlphabet.ToString());
-                    sb.AppendLine("Licensed to: Jebediah Kerman (TRIAL VERSION)");
+                    sb.AppendLine("Licensed to: Jebediah Kerman");
+                    sb.AppendLine("(TRIAL VERSION)");
                     aboutstring = sb.ToString();
                 }
 

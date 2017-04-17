@@ -8,7 +8,7 @@ namespace VirindiRPMPages.MechJeb
     public interface ManeuverType
     {
         void AddOptionsToUI(TextUI.ScrollList uilist);
-        void CreateManeuver();
+        string CreateManeuver();
         string GetTitle();
     }
 }

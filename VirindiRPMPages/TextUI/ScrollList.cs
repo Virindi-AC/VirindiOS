@@ -7,8 +7,13 @@ namespace VirindiRPMPages.TextUI
 {
     public class ScrollList : Control
     {
-        public List<Control> Items = new List<Control>();
+        List<Control> Items = new List<Control>();
         int CursorPosition = -1;
+
+        public void AddControl(Control c)
+        {
+            Items.Add(c);
+        }
 
         public override void NotifyOfDisplay(PageDisplayBuffer buf)
         {
@@ -24,64 +29,94 @@ namespace VirindiRPMPages.TextUI
 
             for (int i = 0; i < Items.Count; ++i)
             {
-                if (CursorPosition == i)
-                    buf.Append("> ");
-                else
-                    buf.Append("  ");
+                ScrollList cl = Items[i] as ScrollList;
+
+                if (cl == null)
+                {
+                    if (CursorPosition == i && HasFocus)
+                        buf.Append("> ");
+                    else
+                        buf.Append("  ");
+                }
+                
                 Items[i].Render(buf);
             }
+        }
+
+        public override eNestedScrollResult NestedScroll(eScrollDirection dir)
+        {
+            if (CursorPosition >= 0 && CursorPosition < Items.Count
+                && Items[CursorPosition].NestedScroll(dir) == eNestedScrollResult.Eaten)
+                return eNestedScrollResult.Eaten;
+
+            //Apply scroll at this level.
+            int oldpos = CursorPosition;
+            if (dir == eScrollDirection.Down)
+            {
+                ScrollList cur;
+                do
+                {
+                    CursorPosition++;
+
+                    //Skip empty lists.
+                    if (CursorPosition >= 0 && CursorPosition < Items.Count)
+                        cur = Items[CursorPosition] as ScrollList;
+                    else
+                        cur = null;
+                }
+                while (cur != null && cur.Items.Count == 0);
+
+                //If we ran off the end, it means no valid selections exist past oldpos.
+                if (CursorPosition >= Items.Count)
+                    CursorPosition = oldpos;
+            }
+            else if (dir == eScrollDirection.Up)
+            {
+                ScrollList cur;
+                do
+                {
+                    CursorPosition--;
+
+                    //Skip empty lists.
+                    if (CursorPosition >= 0 && CursorPosition < Items.Count)
+                        cur = Items[CursorPosition] as ScrollList;
+                    else
+                        cur = null;
+                }
+                while (cur != null && cur.Items.Count == 0);
+
+                //If we ran off the end, it means no valid selections exist past oldpos.
+                if (CursorPosition < 0)
+                    CursorPosition = oldpos;
+            }
+
+            if (oldpos != CursorPosition)
+            {
+                if (oldpos >= 0 && oldpos < Items.Count)
+                    Items[oldpos].OnDefocus();
+                if (CursorPosition >= 0 && CursorPosition < Items.Count)
+                    Items[CursorPosition].OnFocus();
+                return eNestedScrollResult.Eaten;
+            }
+            else
+            {
+                return eNestedScrollResult.NotEaten;
+            }
+
         }
 
         public override void ButtonDown(eMFDButton btn)
         {
             base.ButtonDown(btn);
 
-            if (btn != eMFDButton.Up && btn != eMFDButton.Down
-                && CursorPosition != -1 && CursorPosition < Items.Count)
+            if (CursorPosition != -1 && CursorPosition < Items.Count)
                 Items[CursorPosition].ButtonDown(btn);
-            else
-            {
-                if (btn == eMFDButton.Down)
-                {
-                    int oldpos = CursorPosition;
-                    CursorPosition++;
-                    if (CursorPosition >= Items.Count)
-                        CursorPosition = Items.Count - 1;
-                    int newpos = CursorPosition;
-
-                    if (oldpos != newpos)
-                    {
-                        if (oldpos >= 0 && oldpos < Items.Count)
-                            Items[oldpos].OnDefocus();
-                        if (newpos >= 0 && newpos < Items.Count)
-                            Items[newpos].OnFocus();
-                    }
-                }
-                else if (btn == eMFDButton.Up)
-                {
-                    int oldpos = CursorPosition;
-                    CursorPosition--;
-                    if (CursorPosition < 0)
-                        CursorPosition = 0;
-                    int newpos = CursorPosition;
-
-                    if (oldpos != newpos)
-                    {
-                        if (oldpos >= 0 && oldpos < Items.Count)
-                            Items[oldpos].OnDefocus();
-                        if (newpos >= 0 && newpos < Items.Count)
-                            Items[newpos].OnFocus();
-                    }
-                }
-            }
-
         }
 
         public override void ButtonUp(eMFDButton btn)
         {
             base.ButtonUp(btn);
-            if (btn != eMFDButton.Up && btn != eMFDButton.Down
-                && CursorPosition != -1 && CursorPosition < Items.Count)
+            if (CursorPosition != -1 && CursorPosition < Items.Count)
                 Items[CursorPosition].ButtonUp(btn);
         }
 
@@ -89,10 +124,11 @@ namespace VirindiRPMPages.TextUI
         {
             base.OnFocus();
 
+            //Try to select one if we are off the top.
             if (CursorPosition < 0 && Items.Count > 0)
-                CursorPosition = 0;
-
-            if (CursorPosition >= 0 && CursorPosition < Items.Count)
+                NestedScroll(eScrollDirection.Down);
+            //Or notify the current selection.
+            else if (CursorPosition >= 0 && CursorPosition < Items.Count)
                 Items[CursorPosition].OnFocus();
         }
 

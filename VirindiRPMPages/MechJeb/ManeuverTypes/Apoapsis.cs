@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
+using MuMech;
 
 namespace VirindiRPMPages.MechJeb.ManeuverTypes
 {
@@ -21,9 +22,17 @@ namespace VirindiRPMPages.MechJeb.ManeuverTypes
             newAp.PostLabel = " km";
             mycontainer.AddControl(attime);
         }
-        public string CreateManeuver()
+        public ManeuverParameters CreateManeuver(Orbit o, double universalTime, MechJebModuleTargetController target)
         {
-            return null;
+            double inputnumber = newAp.InputNumber * 1000d; //km
+            double UT = attime.ComputeManeuverTime(o, universalTime, target);
+            if (o.referenceBody.Radius + inputnumber < o.Radius(UT))
+            {
+                string burnAltitude = MuUtils.ToSI(o.Radius(UT) - o.referenceBody.Radius) + "m";
+                throw new OperationException("new apoapsis cannot be lower than the altitude of the burn (" + burnAltitude + ")");
+            }
+
+            return new ManeuverParameters(OrbitalManeuverCalculator.DeltaVToChangeApoapsis(o, UT, inputnumber + o.referenceBody.Radius), UT);
         }
         public string GetTitle()
         {

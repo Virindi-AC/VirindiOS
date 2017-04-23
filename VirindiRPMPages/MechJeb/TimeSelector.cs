@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
+using MuMech;
 
 namespace VirindiRPMPages.MechJeb
 {
@@ -21,8 +22,8 @@ namespace VirindiRPMPages.MechJeb
         TextUI.ChoiceBox mainchoice;
 
         public double universalTime;
-        public double LeadTime;
-        public double CircularizeAltitude;
+        public double LeadTime = 0d;
+        public double CircularizeAltitude = 0d;
 
         public TimeReference ResultReference
         {
@@ -79,7 +80,7 @@ namespace VirindiRPMPages.MechJeb
             {
                 Items.RemoveAt(i);
             }
-            int currentreference = mainchoice.SelectedIndex;
+            currentreference = mainchoice.SelectedIndex;
             if (currentreference >= 0 && currentreference < reference.Length)
             {
                 switch (reference[currentreference])
@@ -115,6 +116,127 @@ namespace VirindiRPMPages.MechJeb
         {
             CircularizeAltitude = (source as TextUI.NumericEdit).InputNumber;
         }
+
+        //MechJeb copypasta
+        public double ComputeManeuverTime(Orbit o, double UT, MechJebModuleTargetController target)
+        {
+            TimeReference curref = ResultReference;
+            if (curref == TimeReference.None)
+                throw new OperationException("You must select a time.");
+            switch (curref)
+            {
+                case TimeReference.X_FROM_NOW:
+                    UT += LeadTime;
+                    break;
+
+                case TimeReference.APOAPSIS:
+                    if (o.eccentricity < 1)
+                    {
+                        UT = o.NextApoapsisTime(UT);
+                    }
+                    else
+                    {
+                        throw new OperationException("Orbit is hyperbolic, no AP.");
+                    }
+                    break;
+
+                case TimeReference.PERIAPSIS:
+                    UT = o.NextPeriapsisTime(UT);
+                    break;
+
+                case TimeReference.CLOSEST_APPROACH:
+                    if (target.NormalTargetExists)
+                    {
+                        UT = o.NextClosestApproachTime(target.TargetOrbit, UT);
+                    }
+                    else
+                    {
+                        throw new OperationException("No target selected.");
+                    }
+                    break;
+
+                case TimeReference.ALTITUDE:
+                    if (CircularizeAltitude > o.PeA && (CircularizeAltitude < o.ApA || o.eccentricity >= 1))
+                    {
+                        UT = o.NextTimeOfRadius(UT, o.referenceBody.Radius + CircularizeAltitude);
+                    }
+                    else
+                    {
+                        throw new OperationException("Orbit does not reach desired altitude.");
+                    }
+                    break;
+
+                case TimeReference.EQ_ASCENDING:
+                    if (o.AscendingNodeEquatorialExists())
+                    {
+                        UT = o.TimeOfAscendingNodeEquatorial(UT);
+                    }
+                    else
+                    {
+                        throw new OperationException("Equatorial AN doesn't exist.");
+                    }
+                    break;
+
+                case TimeReference.EQ_DESCENDING:
+                    if (o.DescendingNodeEquatorialExists())
+                    {
+                        UT = o.TimeOfDescendingNodeEquatorial(UT);
+                    }
+                    else
+                    {
+                        throw new OperationException("Equatorial DN doesn't exist.");
+                    }
+                    break;
+
+                case TimeReference.EQ_NEAREST_AD:
+                    if(o.AscendingNodeEquatorialExists())
+                    {
+                        UT = o.DescendingNodeEquatorialExists()
+                            ? System.Math.Min(o.TimeOfAscendingNodeEquatorial(UT), o.TimeOfDescendingNodeEquatorial(UT))
+                            : o.TimeOfAscendingNodeEquatorial(UT);
+                    }
+                    else if(o.DescendingNodeEquatorialExists())
+                    {
+                        UT = o.TimeOfDescendingNodeEquatorial(UT);
+                    }
+                    else
+                    {
+                        throw new OperationException("Neither ascending nor descending node exists.");
+                    }
+                    break;
+
+                case TimeReference.EQ_HIGHEST_AD:
+                    if(o.AscendingNodeEquatorialExists())
+                    {
+                        if(o.DescendingNodeEquatorialExists())
+                        {
+                            var anTime = o.TimeOfAscendingNodeEquatorial(UT);
+                            var dnTime = o.TimeOfDescendingNodeEquatorial(UT);
+                            UT = o.getOrbitalVelocityAtUT(anTime).magnitude <= o.getOrbitalVelocityAtUT(dnTime).magnitude
+                                ? anTime
+                                : dnTime;
+                        }
+                        else
+                        {
+                            UT = o.TimeOfAscendingNodeEquatorial(UT);
+                        }
+                    }
+                    else if(o.DescendingNodeEquatorialExists())
+                    {
+                        UT = o.TimeOfDescendingNodeEquatorial(UT);
+                    }
+                    else
+                    {
+                        throw new OperationException("Neither ascending nor descending node exists.");
+                    }
+                    break;
+            }
+
+            universalTime = UT;
+            return universalTime;
+        }
+
+
 
 
     }

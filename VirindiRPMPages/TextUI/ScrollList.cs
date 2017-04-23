@@ -50,6 +50,16 @@ namespace VirindiRPMPages.TextUI
             }
         }
 
+        public override bool CanTakeFocus()
+        {
+            for (int i = 0; i < Items.Count; ++i)
+            {
+                if (Items[i].CanTakeFocus())
+                    return true;
+            }
+            return false;
+        }
+
         public override eNestedScrollResult NestedScroll(eScrollDirection dir)
         {
             if (CursorPosition >= 0 && CursorPosition < Items.Count
@@ -60,18 +70,18 @@ namespace VirindiRPMPages.TextUI
             int oldpos = CursorPosition;
             if (dir == eScrollDirection.Down)
             {
-                ScrollList cur;
+                Control cur;
                 do
                 {
                     CursorPosition++;
 
                     //Skip empty lists.
                     if (CursorPosition >= 0 && CursorPosition < Items.Count)
-                        cur = Items[CursorPosition] as ScrollList;
+                        cur = Items[CursorPosition];
                     else
                         cur = null;
                 }
-                while (cur != null && cur.Items.Count == 0);
+                while (cur != null && !cur.CanTakeFocus());
 
                 //If we ran off the end, it means no valid selections exist past oldpos.
                 if (CursorPosition >= Items.Count)
@@ -79,18 +89,18 @@ namespace VirindiRPMPages.TextUI
             }
             else if (dir == eScrollDirection.Up)
             {
-                ScrollList cur;
+                Control cur;
                 do
                 {
                     CursorPosition--;
 
                     //Skip empty lists.
                     if (CursorPosition >= 0 && CursorPosition < Items.Count)
-                        cur = Items[CursorPosition] as ScrollList;
+                        cur = Items[CursorPosition];
                     else
                         cur = null;
                 }
-                while (cur != null && cur.Items.Count == 0);
+                while (cur != null && !cur.CanTakeFocus());
 
                 //If we ran off the end, it means no valid selections exist past oldpos.
                 if (CursorPosition < 0)

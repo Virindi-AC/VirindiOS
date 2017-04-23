@@ -81,6 +81,8 @@
     <Compile Include="MechJeb\ManeuverTypeFactory.cs" />
     <Compile Include="MechJeb\ManeuverTypes\Apoapsis.cs" />
     <Compile Include="MechJeb\TimeSelector.cs" />
+    <Compile Include="TextUI\Label.cs" />
+    <Compile Include="StringBuilderExtNumeric.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

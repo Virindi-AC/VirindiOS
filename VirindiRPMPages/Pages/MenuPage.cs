@@ -133,8 +133,9 @@ namespace VirindiRPMPages.Pages
                 eMultiplexedPageRenderResult res = Pages[CurrentPageID].Render(pagebuilder);
                 if (res == eMultiplexedPageRenderResult.ExitThisPage)
                 {
-                    CurrentPageID = -1;
                     Pages[CurrentPageID].Deactivate();
+                    CurrentPageID = -1;
+                    pagebuilder.Clear();
                 }
                 else
                     return eMultiplexedPageRenderResult.Continue;

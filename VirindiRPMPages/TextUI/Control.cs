@@ -25,6 +25,15 @@ namespace VirindiRPMPages.TextUI
         bool ihasfocus = false;
         public bool HasFocus { get { return ihasfocus; } }
 
+        public Color SelectedColor = new Color(0.623529f, 0.807843f, 1f);
+        public Color UnselectedColor = Color.white;
+
+        public bool OverrideCanTakeFocus = true;
+        public virtual bool CanTakeFocus()
+        {
+            return OverrideCanTakeFocus;
+        }
+
         public virtual void NotifyOfDisplay(PageDisplayBuffer buf)
         {
             CachedDisplay = buf;
@@ -33,9 +42,9 @@ namespace VirindiRPMPages.TextUI
         public virtual void Render(PageDisplayBuffer buf)
         {
             if (HasFocus)
-                buf.CursorColor = new Color(0.623529f, 0.807843f, 1f);
+                buf.CursorColor = SelectedColor;
             else
-                buf.CursorColor = Color.white;
+                buf.CursorColor = UnselectedColor;
             
             //CachedDisplay = buf;
             //buf.OSK_Numeric.Visible = false;
